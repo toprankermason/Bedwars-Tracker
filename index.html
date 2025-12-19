@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bedwars Ranked Stats</title>
+    <style>
+        body { background: #050505; color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .dashboard { background: linear-gradient(145deg, #111, #000); padding: 30px; border-radius: 20px; border: 2px solid #ff0055; box-shadow: 0 0 20px #ff005544; width: 320px; text-align: center; }
+        h1 { font-size: 1.2rem; color: #ff0055; text-transform: uppercase; letter-spacing: 3px; }
+        .stat { margin: 20px 0; }
+        .label { color: #666; font-size: 0.7rem; margin-bottom: 5px; }
+        .value { font-size: 3rem; font-weight: 900; text-shadow: 0 0 10px #ff0055; }
+        .queue-val { color: #00ffcc; text-shadow: 0 0 10px #00ffcc; }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <h1>Nightmare Tracker</h1>
+        <div class="stat">
+            <div class="label">Current Queue</div>
+            <div id="q-val" class="value queue-val">--</div>
+        </div>
+        <div class="stat">
+            <div class="label">Top Player RP</div>
+            <div id="rp-val" class="value">--</div>
+        </div>
+        <p style="font-size: 10px; color: #333;">FETCHING FROM LIVE WEBHOOK...</p>
+    </div>
+
+    <script>
+        async function update() {
+            const url = "PASTE_YOUR_CSV_LINK_HERE";
+            const res = await fetch(url);
+            const text = await res.text();
+            const rows = text.split('\n');
+            const last = rows[rows.length - 1].split(',');
+            document.getElementById('rp-val').innerText = last[2] || "0";
+            document.getElementById('q-val').innerText = last[3] || "0";
+        }
+        setInterval(update, 5000);
+        update();
+    </script>
+</body>
+</html>
